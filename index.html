@@ -10,17 +10,10 @@
 
 <h2>Stwórz nowy turniej</h2>
 
-<form action="create_tournament.php" method="POST">
-    <label>Nazwa turnieju:</label><br>
-    <input type="text" name="name" required><br><br>
-
-    <label>Ilość kategorii:</label><br>
-    <input type="number" id="num_categories" name="num_categories" min="1" required>
-    <button type="button" onclick="generateCategoryFields()">Dalej</button><br><br>
-
-    <div id="categoryFields"></div>
-
-    <button type="submit" id="submitBtn" style="display:none;">Utwórz turniej z kategoriami</button>
+<form action="login.php" method="POST">
+    login: <br> <input type="text" name="login" ><br>
+    haslo: <br> <input type="password" name="haslo" >
+    <input type="submit" value="Zaloguj sie">
 </form>
 
 </body>
