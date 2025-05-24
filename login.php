@@ -1,3 +1,12 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title>Login validation</title>
+    <link rel="stylesheet" href="css/style.css" type="text/css"/>
+</head>
+<body>
+    <div class="container">
+        <h2>Dane logowania:</h2>
 <?php
     require_once "db_conf.php";
 
@@ -9,9 +18,10 @@
         $login = $_POST['login'];
         $haslo = $_POST['haslo'];
 
-        echo $login."<br>";
-        echo $haslo;
+        echo '<div class="dane">Login: '.$login.'</div>';
+        echo '<div class="dane">Haslo: '.$haslo.'</div>';
     }
-    
 ?>
 
+    </div>
+</body>
