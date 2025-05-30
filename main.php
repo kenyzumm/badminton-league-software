@@ -7,12 +7,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="css/style.css" type="test/css"/>
 
 
 </head>
 <body>
+    <div class="container">
+        <div class="options">
+            <div class="option">Strona glowna</div>
+            <div class="option">Nowy turniej</div>
+            <div class="option">Przeglad turniejow</div>
+        </div>
 <?php
-    echo "<p> Witaj ".$_SESSION['user']."!";
-?>    
+    echo "<div class='greeting'> Witaj ".$_SESSION['user']."!</div>" ;
+?>
+    </div>
+
 </body>
 </html>
