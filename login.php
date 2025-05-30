@@ -17,6 +17,7 @@
                 $wiersz =$result->fetch_assoc();
                 $_SESSION['user']=$wiersz['user'];
 
+                unset($_SESSION['blad']); 
                 $result->free_result();
                 header('Location: main.php');
             }else{
