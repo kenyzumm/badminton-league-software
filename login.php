@@ -20,8 +20,8 @@
                 $result->free_result();
                 header('Location: main.php');
             }else{
-                echo "nie ma takiego usera";
-
+                $_SESSION['blad']= '<span style="color:red">Nieprawidłowy login lub hasło!</span>';
+                header('Location: index.php');
             }
         }
         
