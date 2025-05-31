@@ -8,10 +8,10 @@ body {
     justify-content: center;
 }
 .container {
-    background: #333;
+    background: #FFFFFF;
     padding: 2.5rem 2rem;
     border-radius: 16px;
-    box-shadow: 0 6px 32px rgba(0,0,0,0.12)
+    box-shadow: 0 6px 32px rgba(0,0,0,0.12);
 }
 
 h2 {
@@ -21,6 +21,13 @@ h2 {
 .dane {
     color: #333;
 }
+.options {
+    display: flex;
+}
 .option {
-    color: #123123
+    color: red;
+    margin-right: 5px;
+}
+.greeting {
+    color: red;
 }

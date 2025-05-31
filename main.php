@@ -15,9 +15,9 @@
 <body>
     <div class="container">
         <div class="options">
-            <div class="option">Strona glowna</div>
-            <div class="option">Nowy turniej</div>
-            <div class="option">Przeglad turniejow</div>
+            <div class="option"><a href="main.php">Strona glowna</a></div>
+            <div class="option"><a href="add_tournament.php">Nowy turniej</a></div>
+            <div class="option"><a href="tournaments.php">Przeglad turniejow</a></div>
         </div>
 <?php
     echo "<div class='greeting'> Witaj ".$_SESSION['user']."!</div>" ;
