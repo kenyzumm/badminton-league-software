@@ -14,7 +14,7 @@
     <div class="container">
         <h2>Zaloguj sie do konta</h2>
         <form action="login.php" method="POST">
-            Login: <br> <input type="text" name="login"><br>
+            Login: <br> <input type="text" name="login"><br> <!-- Pozamieniac na divy -->
             Haslo: <br> <input type="password" name="haslo">
             <input type="submit" value="Zaloguj sie">
         </form>
