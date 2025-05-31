@@ -20,25 +20,31 @@
             <div class="option"><a href="tournaments.php">Przeglad turniejow</a></div>
         </div>
         <?php
-            
             require_once "db_conf.php";
-            $polaczenie = @new mysqli($host, $db_user, $db_password, $db_name);    
+            $polaczenie = new mysqli($host, $db_user, $db_password, $db_name);    
             if($polaczenie->connect_errno!=0){
-                echo "Error: ".$polaczenie->connect_errno;
+                echo "<div class='option'>Error: ".$polaczenie->connect_errno."</div>";
             } else {
-                $sql = ""; // dodac, aby wyswietlilo turnieje danego uzytkownika
-                $wynik = $polaczenie->query($sql));
+                $sql = "SELECT * FROM tournaments WHERE 1"; // dodac, aby wyswietlilo turnieje danego uzytkownika
+                $wynik = $polaczenie->query($sql);
 
-                if($wynik->nums_row > 0) {
-                    while($row = wynik->fetch_assoc()) {
-                        echo "Nazwa turnieju : " . $row['tournament_name'] . " Opis turnieju: " . $row['tournament_desc'] . "<br>";
+                if($wynik && $wynik->num_rows > 0) {
+                    echo "<div class='tournament-list'>";
+                    while($row = $wynik->fetch_assoc()) {
+                        echo "<div class='tournament'>";
+                            echo "<div class='tournament-id'>" . htmlspecialchars($row['tournament_id']) . "</div>";
+                            echo "<div class='tournament-name'>" . htmlspecialchars($row['tournament_name']) . "</div>";
+                            echo "<div class='tournament-desc'>" . htmlspecialchars($row['tournament_desc']) . "</div>";
+                            echo "<div class='tournament-owner_id'>" . htmlspecialchars($row['owner_id']) . "</div>";
+                        echo "</div>";
                     }
+                    echo "</div>";
                 } else {
-                    echo "Brak turniejow";
+                    echo "<div class='option'>Brak turniejow</div>";
                 }
             }
             $polaczenie->close();
-?>
+        ?>
     </div>
 
 </body>
