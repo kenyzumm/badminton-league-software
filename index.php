@@ -18,11 +18,11 @@
             Haslo: <br> <input type="password" name="haslo">
             <input type="submit" value="Zaloguj sie">
         </form>
+        <div class="register"><a href="register_page.php">Zarejestruj sie</a></div>
         <?php
             if(isset($_SESSION['blad'])){
                 echo $_SESSION['blad'];
             }
-            
         ?>
     </div>
 

@@ -55,7 +55,7 @@ h2 {
     border: 1px solid #000;
     width: 100%
 }
-.tournament-id, .tournament-desc, .tournament-owner_id {
+.tournament-id, .tournament-name, .tournament-desc, .tournament-owner_id, .button {
     flex: 1;
     margin-right: 10px;
     word-break: break-word;
@@ -63,4 +63,7 @@ h2 {
 }
 .tournament > div:last-child {
     margin-right: 0px;
+}
+.register {
+    padding: 4px;
 }

@@ -33,6 +33,14 @@
                             echo "<div class='tournament-name'>" . htmlspecialchars($row['tournament_name']) . "</div>";
                             echo "<div class='tournament-desc'>" . htmlspecialchars($row['tournament_desc']) . "</div>";
                             echo "<div class='tournament-owner_id'>" . htmlspecialchars($row['owner_id']) . "</div>";
+                            echo "  <div class='button'>
+                                        <form action='tournament_settings.php' method='POST'>
+                                        <input type='hidden' name='tournament-id' value='" . htmlspecialchars($row['tournament_id']) . "'>
+                                        <button type='submit'>
+                                            Ustawienia
+                                        </button>
+                                        </form>
+                                    </div>";
                         echo "</div>";
                     }
                     echo "</div>";
