@@ -9,9 +9,9 @@ if($polaczenie->connect_errno!=0){
 } else {
     $tournament_name = $_POST['tournament_name'];
     $tournament_desc = $_POST['tournament_desc'];
-    $sqlid = "SELECT user_id FROM users WHERE user = '".$_SESSION['user']."'";
-    $wynik= $polaczenie->query($sql));
-    if($wynik && wynik->num_rows > 0) {
+    $sqlid = "SELECT user_id FROM users WHERE user='".$_SESSION['user']."'";
+    $wynik= $polaczenie->query($sqlid);
+    if($wynik && $wynik->num_rows > 0) {
         $row = $wynik->fetch_assoc();
         $owner_id = $row['user_id'];
     } else {
@@ -24,11 +24,12 @@ if($polaczenie->connect_errno!=0){
     if($stmt->execute()) {
         echo "Dodano rekord";
     } else {
-        echo "Blad dodania rekordu: " . $stmt->error;
+        echo "Blad dodania rekordu: ";
     }
 
     $stmt->close();
     $polaczenie->close();
+    header('Location: tournaments.php');
 }
 
 ?>

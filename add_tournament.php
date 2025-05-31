@@ -21,11 +21,11 @@
         </div>
     <h2>Dodaj turniej</h2>
     <form action="add_tour.php" method="POST">
-        <div class="">Nazwa turnieju</div>
-        <div class=""><input type="text" name="tournament_name"></div>
-        <div class="">Opis turnieju</div>
-        <div class=""><input type="text" name="tournament_desc"></div>
-        <div class=""><input type="submit" value="Dodaj turniej"></div>
+        <div class="input-name">Nazwa turnieju</div>
+        <div class="input"><input type="text" name="tournament_name"></div>
+        <div class="input-name">Opis turnieju</div>
+        <div class="input"><input type="text" name="tournament_desc"></div>
+        <div class="button"><input type="submit" value="Dodaj turniej"></div>
     </form>
 
     </div>
