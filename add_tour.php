@@ -9,11 +9,25 @@ if($polaczenie->connect_errno!=0){
 } else {
     $tournament_name = $_POST['tournament_name'];
     $tournament_desc = $_POST['tournament_desc'];
-    $sql = ""; // dodac kod do sql zeby wprowadzic turniej
-    if($result = @$polaczenie->query($sql)) {
-        echo "Dodano turniej";
-        // zrobic strone po tym, jak dodano info dotyczace turnieju, np. dodawanie zawodnikow itp. i zrobic tu przekierowanie
+    $sqlid = "SELECT user_id FROM users WHERE user = '".$_SESSION['user']."'";
+    $wynik= $polaczenie->query($sql));
+    if($wynik && wynik->num_rows > 0) {
+        $row = $wynik->fetch_assoc();
+        $owner_id = $row['user_id'];
+    } else {
+        $owner_id = -1;
     }
+    $sql = "INSERT INTO tournaments (tournament_id, tournament_name, tournament_desc, owner_id) VALUES (NULL, ?, ?, ?)";
+    $stmt = $polaczenie->prepare($sql);
+    $stmt->bind_param("ssi", $tournament_name, $tournament_desc, $owner_id);
+    
+    if($stmt->execute()) {
+        echo "Dodano rekord";
+    } else {
+        echo "Blad dodania rekordu: " . $stmt->error;
+    }
+
+    $stmt->close();
     $polaczenie->close();
 }
 
