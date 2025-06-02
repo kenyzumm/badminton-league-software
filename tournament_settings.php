@@ -72,7 +72,7 @@ echo "
         <div class=''><input type='text' name='surname'></div>
         <div class=''>Kategoria</div>
         <div class=''><input type='text' name='category_id'></div>
-        <input type='hidden' value='" . $tournament_id . "'>
+        <input type='hidden' name='tournament_id' value='" . $tournament_id . "'>
         <div class=''><input type='submit' value='Dodaj gracza'></div>
         </form>
     </div>
