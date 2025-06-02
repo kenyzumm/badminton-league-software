@@ -1,7 +1,7 @@
 <?php
     session_start();
     require_once "db_conf.php";
-    $polaczenie = new mysqli($host, $db_user, $db_password, $db_name);
+    $connection = new mysqli($host, $db_user, $db_password, $db_name);
     $user = $_POST['user'];
     $email = $_POST['email'];
     $password1 = $_POST['password1'];
@@ -13,7 +13,7 @@
     }
     // sprawdzenie czy dany user juz istnieje
     $sql = "SELECT * FROM users WHERE user='" . $user . "'";
-    if($result = $polaczenie->query($sql)) {
+    if($result = $connection->query($sql)) {
 		$ilu_userow = $result->num_rows;
         if($ilu_userow != 0) {
             $_SESSION['blad'] = "User o podanym loginie juz istnieje";
@@ -22,7 +22,7 @@
         }
     }
     $sql = "SELECT * FROM users where email='" . $email . "'";
-    if($result = $polaczenie->query($sql)) {
+    if($result = $connection->query($sql)) {
         $ilu_userow = $result->num_rows;
         if($ilu_userow != 0) {
             $_SESSION['blad'] = "Podany mail juz jest wykorzystywany";
@@ -31,7 +31,7 @@
         }
     }
     $sql = "INSERT INTO users (user_id, user, pass, email) VALUES (NULL, ?, ?, ?)";
-    $stmt = $polaczenie->prepare($sql);
+    $stmt = $connection->prepare($sql);
     $stmt->bind_param("sss", $user, $password1, $email);
     if($stmt->execute()) {
         $_SESSION['blad'] = "Zarejestrowano pomyslnie";
@@ -39,7 +39,7 @@
         $_SESSION['blad'] = "Blad dodania rekordu";
     }
     $stmt->close();
-    $polaczenie->close();
+    $connection->close();
     header('Location: index.php');
     
 ?>

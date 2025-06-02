@@ -18,12 +18,12 @@
         </div>
         <?php
             require_once "db_conf.php";
-            $polaczenie = new mysqli($host, $db_user, $db_password, $db_name);    
-            if($polaczenie->connect_errno!=0){
-                echo "<div class='option'>Error: ".$polaczenie->connect_errno."</div>";
+            $connection = new mysqli($host, $db_user, $db_password, $db_name);    
+            if($connection->connect_errno!=0){
+                echo "<div class='option'>Error: ".$connection->connect_errno."</div>";
             } else {
                 $sql = "SELECT * FROM tournaments WHERE 1"; // dodac, aby wyswietlilo turnieje danego uzytkownika
-                $wynik = $polaczenie->query($sql);
+                $wynik = $connection->query($sql);
 
                 if($wynik && $wynik->num_rows > 0) {
                     echo "<div class='tournament-list'>";
@@ -48,7 +48,7 @@
                     echo "<div class='tournament'>Brak turniejow</div>";
                 }
             }
-            $polaczenie->close();
+            $connection->close();
 ?>
 <?php
     if(isset($_SESSION['blad'])) {

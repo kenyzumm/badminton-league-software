@@ -8,9 +8,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="css/style.css" type="text/css"/>
-
-
-
 </head>
 <body>
     <div class="container">
@@ -22,9 +19,9 @@
 <div class='tournament_settings'>
 <?php
 require_once "db_conf.php";
-$polaczenie = new mysqli($host, $db_user, $db_password, $db_name);
-if($polaczenie->connect_errno!=0) {
-    echo "Error: " . $polaczenie->connect_errno;
+$connection = new mysqli($host, $db_user, $db_password, $db_name);
+if($connection->connect_errno!=0) {
+    echo "Error: " . $connection->connect_errno;
 } else {
     $tournament_id = filter_input(INPUT_POST, 'tournament-id', FILTER_VALIDATE_INT);
     if(!$tournament_id) {
@@ -36,7 +33,7 @@ if($polaczenie->connect_errno!=0) {
             JOIN users u ON t.owner_id = u.user_id 
             WHERE t.tournament_id='$tournament_id'";
 
-    if($result = $polaczenie->query($sql)) {
+    if($result = $connection->query($sql)) {
         if($result && $result->num_rows > 0) {
             $row = $result->fetch_assoc();
             echo "<div class='description'>";
@@ -46,13 +43,15 @@ if($polaczenie->connect_errno!=0) {
             echo "<div class='desc'>Wlasciciel: " . htmlspecialchars($row['user']) . "</div>";
 
             $sql = "SELECT p.name, p.surname, p.category_id FROM players p WHERE p.tournament_id='" . $tournament_id . "'";
-            $wynik = $polaczenie->query($sql);
+            $wynik = $connection->query($sql);
                 echo "<div class='players'>";
             if($wynik->num_rows > 0) {
                 echo "<div class=''>Gracze:</div>";
+                $gracze = 1;
                 while($row2 = $wynik->fetch_assoc()) {
-                    echo "<div class='player'>" . $row2['name'] . " " . $row2['surname'] . " Kategoria: " . $row2['category_id'] . "</div>";
-                }} else {
+                    echo "<div class='player'>". $gracze++ . ". " . $row2['name'] . " " . $row2['surname'] . " Kategoria: " . $row2['category_id'] . "</div>";
+                }
+            } else {
                     echo "<div class=''>Brak dodanych graczy</div>";
                 }
                 echo "</div>";
