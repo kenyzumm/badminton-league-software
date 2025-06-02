@@ -1,5 +1,7 @@
 <?php
     session_start();
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -72,6 +74,19 @@ if($connection->connect_errno!=0) {
 
 // formularz do dodawania graczy do turnieju
 echo "
+    <div class='add_category'>
+        <form action='add_category.php' method='POST'>
+        <h2>Dodaj katergie</h2>
+        <div class=''>Nazwa kategorii</div>
+        <div class=''><input type='text' name='category_name'></div>
+        <input type='hidden' name='tournament_id' value='" . $tournament_id . "'>
+        <div class=''><input type='submit' value='Dodaj kategię'></div>
+        </form>
+    </div>
+</div>
+";
+
+echo "
     <div class='add_player'>
         <form action='add_player.php' method='POST'>
         <h2>Dodaj gracza</h2>
@@ -80,13 +95,14 @@ echo "
         <div class=''>Nazwisko</div>
         <div class=''><input type='text' name='surname'></div>
         <div class=''>Kategoria</div>
-        <div class=''><input type='text' name='category_id'></div>
+        <div class=''><input type='text' name='category_id'></div> 
         <input type='hidden' name='tournament_id' value='" . $tournament_id . "'>
         <div class=''><input type='submit' value='Dodaj gracza'></div>
         </form>
     </div>
 </div>
 ";
+
 
 
 // przycisk do usuwania danych z turnieju

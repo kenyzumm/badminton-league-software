@@ -6,15 +6,12 @@
         echo "Error: " . $connection->connect_errno;
     } else {
         // pobranie zmiennych z POST
-        $name = $_POST['name'];
-        $surname = $_POST['surname'];
-        $category_id = $_POST['category_id']; 
+        $category_name = $_POST['category_name'];
         $tournament_id = $_POST['tournament_id'];
-
         // przygotowanie zapytania sql
-        $sql = "INSERT INTO players (player_id, name, surname, tournament_id, category_id) VALUES (NULL, ?, ?, ?, ?)";
+        $sql = "INSERT INTO category (category_id, category_name, tournament_id) VALUES (NULL, ?, ?)";
         $stmt = $connection->prepare($sql);
-        $stmt->bind_param("ssii", $name, $surname, $tournament_id, $category_id);//nazwa katergorii , category_name, 
+        $stmt->bind_param("si", $category_name, $tournament_id);//nazwa katergorii , category_name, 
         if($stmt->execute()) {
             $_SESSION['blad'] = "Dodano pomyslnie";
         } else {
