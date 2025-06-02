@@ -73,3 +73,17 @@ h2 {
 .register {
     padding-top: 4px;
 }
+.description {
+    flex: 1;
+    padding: 16px;
+}
+.desc {
+    padding: 4px;
+    font-size: 24px;
+}
+.players {
+    flex: 1;
+}
+.tournament_settings {
+    display: flex;
+}

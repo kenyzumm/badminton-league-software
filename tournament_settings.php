@@ -19,6 +19,7 @@
             <div class="option"><a href="add_tournament.php">Nowy turniej</a></div>
             <div class="option"><a href="tournaments.php">Przeglad turniejow</a></div>
         </div>
+<div class='tournament_settings'>
 <?php
 require_once "db_conf.php";
 $polaczenie = new mysqli($host, $db_user, $db_password, $db_name);
@@ -38,20 +39,19 @@ if($polaczenie->connect_errno!=0) {
     if($result = $polaczenie->query($sql)) {
         if($result && $result->num_rows > 0) {
             $row = $result->fetch_assoc();
-            echo "<div class=''>";
+            echo "<div class='description'>";
 
-            echo "<div class=''>Nazwa turnieju: " . htmlspecialchars($row['tournament_name']) . "</div>";
-            echo "<div class=''>Opis turnieju: " . htmlspecialchars($row['tournament_desc']) . "</div>"; 
-            echo "<div class=''>Wlasciciel: " . htmlspecialchars($row['user']) . "</div>";
+            echo "<div class='desc'>Nazwa turnieju: " . htmlspecialchars($row['tournament_name']) . "</div>";
+            echo "<div class='desc'>Opis turnieju: " . htmlspecialchars($row['tournament_desc']) . "</div>"; 
+            echo "<div class='desc'>Wlasciciel: " . htmlspecialchars($row['user']) . "</div>";
 
             $sql = "SELECT p.name, p.surname, p.category_id FROM players p WHERE p.tournament_id='" . $tournament_id . "'";
             $wynik = $polaczenie->query($sql);
                 echo "<div class='players'>";
-                if($wynik->num_rows > 0) {
+            if($wynik->num_rows > 0) {
+                echo "<div class=''>Gracze:</div>";
                 while($row2 = $wynik->fetch_assoc()) {
-                    echo "<div class=''>" . $row2['name'] . "</div>";
-                    echo "<div class=''>" . $row2['surname']. "</div>";
-                    echo "<div class=''>" . $row2['category_id']. "</div>";
+                    echo "<div class='player'>" . $row2['name'] . " " . $row2['surname'] . " Kategoria: " . $row2['category_id'] . "</div>";
                 }} else {
                     echo "<div class=''>Brak dodanych graczy</div>";
                 }
@@ -61,6 +61,23 @@ if($polaczenie->connect_errno!=0) {
             echo "</div>";
         }
     }
+
+echo "
+    <div class='add_player'>
+        <form action='add_player.php' method='POST'>
+        <h2>Dodaj gracza</h2>
+        <div class=''>Imie</div>
+        <div class=''><input type='text' name='name'></div>
+        <div class=''>Nazwisko</div>
+        <div class=''><input type='text' name='surname'></div>
+        <div class=''>Kategoria</div>
+        <div class=''><input type='text' name='category_id'></div>
+        <input type='hidden' value='" . $tournament_id . "'>
+        <div class=''><input type='submit' value='Dodaj gracza'></div>
+        </form>
+    </div>
+</div>
+";
 
 echo "
 <div class='last'>
@@ -74,7 +91,6 @@ echo "
 }
 
 ?>
-
     </div>
 
 </body>
