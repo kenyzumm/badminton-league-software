@@ -17,11 +17,11 @@
                 <div class="data">Login:</div>
                 <div class="input"><input type="text" name="user"></div>
                 <div class="data">E-mail:</div>
-                <div class="input"><input type="text" name="user"></div>
+                <div class="input"><input type="text" name="email"></div>
                 <div class="data">Password:</div>
-                <div class="input"><input type="password" name="user"></div>
+                <div class="input"><input type="password" name="password1"></div>
                 <div class="data">Verify password:</div>
-                <div class="input"><input type="password" name="user"></div>
+                <div class="input"><input type="password" name="password2"></div>
                 <div class="register"><input type="submit" value="Zarejestruj sie"></div>
 
             </div>
@@ -29,7 +29,7 @@
 
 <?php
     if(isset($_SESSION['blad'])) {
-        echo $_SESSION['blad'];
+        echo "<div class=''>" . $_SESSION['blad'] . "</div>";
         unset($_SESSION['blad']);
     }
 ?>
