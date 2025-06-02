@@ -64,6 +64,12 @@ h2 {
 .tournament > div:last-child {
     margin-right: 0px;
 }
+.data {
+    
+}
+.input {
+    
+}
 .register {
-    padding: 4px;
+    padding-top: 4px;
 }

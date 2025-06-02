@@ -1,3 +1,0 @@
-<?php
-    //kod do rejestracji
-?>
