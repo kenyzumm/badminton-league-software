@@ -11,13 +11,22 @@
 </head>
 <body>
     <div class="container">
+    <h2>Rejestracja</h2>
         <form action="register.php" method="POST">
-            <div class="user">Login: <input type="text" name="user"></div>
-            <div class="email">E-mail: <input type="text" name="email"></div>
-            <div class="password">Password: <input type="password" name="password1"></div>
-            <div class="password">Verify password: <input type="password" name="password2"></div>
-            <div class="button"><input type="submit" value="Zarejestruj sie"></div>
-            <div class="warning">
+            <div class="form-row">
+                <div class="data">Login:</div>
+                <div class="input"><input type="text" name="user"></div>
+                <div class="data">E-mail:</div>
+                <div class="input"><input type="text" name="user"></div>
+                <div class="data">Password:</div>
+                <div class="input"><input type="password" name="user"></div>
+                <div class="data">Verify password:</div>
+                <div class="input"><input type="password" name="user"></div>
+                <div class="register"><input type="submit" value="Zarejestruj sie"></div>
+
+            </div>
+        </form>
+
 <?php
     if(isset($_SESSION['blad'])) {
         echo $_SESSION['blad'];
