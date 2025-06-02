@@ -19,7 +19,7 @@
 <?php
 echo "<div class='greeting'> Witaj ".$_SESSION['user']."!</div>" ;
 if(isset($_SESSION['blad'])) {
-    echo "<div class='error'>" . $_SESSION['blad'] . "</div>"
+    echo "<div class='error'>" . $_SESSION['blad'] . "</div>";
 }
 ?>
     </div>
