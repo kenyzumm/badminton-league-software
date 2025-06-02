@@ -26,8 +26,8 @@ if($connection->connect_errno!=0) {
     echo "Error: " . $connection->connect_errno;
 } else {
     // pobranie zmiennych z POST
-    $tournament_id = filter_input(INPUT_POST, 'tournament-id', FILTER_VALIDATE_INT);
-    if(!$tournament_id) {
+    $_SESSION['tournament_id'] = filter_input(INPUT_POST, 'tournament-id', FILTER_VALIDATE_INT);
+    if(!$_SESSION['tournament_id']) {
         echo "Nieprawidlowe ID turnieju";
         die();
     }
@@ -36,7 +36,7 @@ if($connection->connect_errno!=0) {
     $sql = "SELECT t.tournament_name, t.tournament_desc, u.user 
             FROM tournaments t  
             JOIN users u ON t.owner_id = u.user_id 
-            WHERE t.tournament_id='$tournament_id'";
+            WHERE t.tournament_id='" . $_SESSION['tournament_id'] . "'";
 
     if($result = $connection->query($sql)) {
         if($result && $result->num_rows > 0) {
@@ -50,7 +50,7 @@ if($connection->connect_errno!=0) {
 
 
             // zapytanie sql do wypisania playerow w danym turnieju
-            $sql = "SELECT p.name, p.surname, p.category_id FROM players p WHERE p.tournament_id='" . $tournament_id . "'";
+            $sql = "SELECT p.name, p.surname, p.category_id FROM players p WHERE p.tournament_id='" . $_SESSION['tournament_id'] . "'";
             $wynik = $connection->query($sql);
             
             // wypisanie graczy, o ile istnieja
@@ -79,7 +79,7 @@ echo "
         <h2>Dodaj katergie</h2>
         <div class=''>Nazwa kategorii</div>
         <div class=''><input type='text' name='category_name'></div>
-        <input type='hidden' name='tournament_id' value='" . $tournament_id . "'>
+        <input type='hidden' name='tournament_id' value='" . $_SESSION['tournament_id'] . "'>
         <div class=''><input type='submit' value='Dodaj kategię'></div>
         </form>
     </div>
@@ -96,7 +96,7 @@ echo "
         <div class=''><input type='text' name='surname'></div>
         <div class=''>Kategoria</div>
         <div class=''><input type='text' name='category_id'></div> 
-        <input type='hidden' name='tournament_id' value='" . $tournament_id . "'>
+        <input type='hidden' name='tournament_id' value='" . $_SESSION['tournament_id'] . "'>
         <div class=''><input type='submit' value='Dodaj gracza'></div>
         </form>
     </div>
@@ -109,7 +109,7 @@ echo "
 echo "
 <div class='last'>
     <form action='delete_tournament.php' method='POST'>
-        <input type='hidden' name='tournament_id' value='" . $tournament_id ."'>
+        <input type='hidden' name='tournament_id' value='" . $_SESSION['tournament_id'] ."'>
         <input type='submit' value='Usun turniej'>
     </form>
 </div>

@@ -9,12 +9,15 @@
         $name = $_POST['name'];
         $surname = $_POST['surname'];
         $category_id = $_POST['category_id']; 
-        $tournament_id = $_POST['tournament_id'];
+        if(isset($_SESSION['tournament_id'])) {
+            $_SESSION['blad'] = "Brak tournament_id";
+            die();
+        }
 
         // przygotowanie zapytania sql
         $sql = "INSERT INTO players (player_id, name, surname, tournament_id, category_id) VALUES (NULL, ?, ?, ?, ?)";
         $stmt = $connection->prepare($sql);
-        $stmt->bind_param("ssii", $name, $surname, $tournament_id, $category_id);//nazwa katergorii , category_name, 
+        $stmt->bind_param("ssii", $name, $surname, $_SESSION['tournament_id'], $category_id);//nazwa katergorii , category_name, 
         if($stmt->execute()) {
             $_SESSION['blad'] = "Dodano pomyslnie";
         } else {

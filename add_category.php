@@ -7,11 +7,14 @@
     } else {
         // pobranie zmiennych z POST
         $category_name = $_POST['category_name'];
-        $tournament_id = $_POST['tournament_id'];
+        if(!isset($_SESSION['tournament_id'])) {
+            $_SESSION['blad'] = 'Brak tournament_id';
+            die();
+        }
         // przygotowanie zapytania sql
         $sql = "INSERT INTO category (category_id, category_name, tournament_id) VALUES (NULL, ?, ?)";
         $stmt = $connection->prepare($sql);
-        $stmt->bind_param("si", $category_name, $tournament_id);//nazwa katergorii , category_name, 
+        $stmt->bind_param("si", $category_name, $_SESSION['tournament_id']);//nazwa katergorii , category_name, 
         if($stmt->execute()) {
             $_SESSION['blad'] = "Dodano pomyslnie";
         } else {
