@@ -61,10 +61,20 @@ if($polaczenie->connect_errno!=0) {
             echo "</div>";
         }
     }
+
+echo "
+<div class='last'>
+    <form action='delete.php' method='POST'>
+        <input type='hidden' value='" . $tournament_id ."'>
+        <input type='submit' value='Usun turniej'';
+    </form>
+</div>
+";
     $connection->close();
 }
 
 ?>
+
     </div>
 
 </body>
