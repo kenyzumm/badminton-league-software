@@ -9,7 +9,7 @@
         $name = $_POST['name'];
         $surname = $_POST['surname'];
         $category_id = $_POST['category_id']; 
-        if(isset($_SESSION['tournament_id'])) {
+        if(!isset($_SESSION['tournament_id'])) {
             $_SESSION['blad'] = "Brak tournament_id";
             die();
         }
