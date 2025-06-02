@@ -29,7 +29,7 @@
 
 <?php
     if(isset($_SESSION['blad'])) {
-        echo "<div class=''>" . $_SESSION['blad'] . "</div>";
+        echo "<div class='error'>" . $_SESSION['blad'] . "</div>";
         unset($_SESSION['blad']);
     }
 ?>

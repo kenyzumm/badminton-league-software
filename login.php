@@ -6,9 +6,11 @@
         echo "Error: ".$connection->connect_errno;
     }
     else{
+        // pobranie zmiennych z POST
         $login = $_POST['login'];
         $haslo = $_POST['haslo'];
-        
+
+        // zapytanie sql
         $sql = "SELECT * FROM users WHERE user ='$login' AND pass = '$haslo'";
         if($result = @$connection->query($sql))
         {
@@ -16,12 +18,10 @@
             if($ilu_userow>0){
                 $wiersz =$result->fetch_assoc();
                 $_SESSION['user']=$wiersz['user'];
-
-                unset($_SESSION['blad']); 
                 $result->free_result();
                 header('Location: main.php');
             }else{
-                $_SESSION['blad']= '<span style="color:red">Nieprawidłowy login lub hasło!</span>';
+                $_SESSION['blad']= "Blad logowania";
                 header('Location: index.php');
             }
         }

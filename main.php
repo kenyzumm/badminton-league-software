@@ -17,7 +17,10 @@
             <div class="option"><a href="tournaments.php">Przeglad turniejow</a></div>
         </div>
 <?php
-    echo "<div class='greeting'> Witaj ".$_SESSION['user']."!</div>" ;
+echo "<div class='greeting'> Witaj ".$_SESSION['user']."!</div>" ;
+if(isset($_SESSION['blad'])) {
+    echo "<div class='error'>" . $_SESSION['blad'] . "</div>"
+}
 ?>
     </div>
 

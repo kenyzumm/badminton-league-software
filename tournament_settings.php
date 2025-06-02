@@ -23,11 +23,14 @@ $connection = new mysqli($host, $db_user, $db_password, $db_name);
 if($connection->connect_errno!=0) {
     echo "Error: " . $connection->connect_errno;
 } else {
+    // pobranie zmiennych z POST
     $tournament_id = filter_input(INPUT_POST, 'tournament-id', FILTER_VALIDATE_INT);
     if(!$tournament_id) {
         echo "Nieprawidlowe ID turnieju";
         die();
     }
+
+    // zapytanie sql do pobrania danych o turnieju
     $sql = "SELECT t.tournament_name, t.tournament_desc, u.user 
             FROM tournaments t  
             JOIN users u ON t.owner_id = u.user_id 
@@ -38,18 +41,24 @@ if($connection->connect_errno!=0) {
             $row = $result->fetch_assoc();
             echo "<div class='description'>";
 
+            // wypisanie danych turnieju
             echo "<div class='desc'>Nazwa turnieju: " . htmlspecialchars($row['tournament_name']) . "</div>";
             echo "<div class='desc'>Opis turnieju: " . htmlspecialchars($row['tournament_desc']) . "</div>"; 
             echo "<div class='desc'>Wlasciciel: " . htmlspecialchars($row['user']) . "</div>";
 
+
+            // zapytanie sql do wypisania playerow w danym turnieju
             $sql = "SELECT p.name, p.surname, p.category_id FROM players p WHERE p.tournament_id='" . $tournament_id . "'";
             $wynik = $connection->query($sql);
-                echo "<div class='players'>";
+            
+            // wypisanie graczy, o ile istnieja
+            echo "<div class='players'>";
+
             if($wynik->num_rows > 0) {
-                echo "<div class=''>Gracze:</div>";
                 $gracze = 1;
-                while($row2 = $wynik->fetch_assoc()) {
-                    echo "<div class='player'>". $gracze++ . ". " . $row2['name'] . " " . $row2['surname'] . " Kategoria: " . $row2['category_id'] . "</div>";
+                echo "<div class=''>Gracze:</div>";
+                while($row_players = $wynik->fetch_assoc()) {
+                    echo "<div class='player'>". $gracze++ . ". " . $row_players['name'] . " " . $row_players['surname'] . " Kategoria: " . $row_players['category_id'] . "</div>";
                 }
             } else {
                     echo "<div class=''>Brak dodanych graczy</div>";
@@ -61,6 +70,7 @@ if($connection->connect_errno!=0) {
         }
     }
 
+// formularz do dodawania graczy do turnieju
 echo "
     <div class='add_player'>
         <form action='add_player.php' method='POST'>
@@ -78,6 +88,8 @@ echo "
 </div>
 ";
 
+
+// przycisk do usuwania danych z turnieju
 echo "
 <div class='last'>
     <form action='delete_tournament.php' method='POST'>

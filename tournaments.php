@@ -22,9 +22,12 @@
             if($connection->connect_errno!=0){
                 echo "<div class='option'>Error: ".$connection->connect_errno."</div>";
             } else {
+
+                // zapytanie sql do wyswietlania wszystkich turniejow
                 $sql = "SELECT * FROM tournaments WHERE 1"; // dodac, aby wyswietlilo turnieje danego uzytkownika
                 $wynik = $connection->query($sql);
 
+                // wypisanie turniejow
                 if($wynik && $wynik->num_rows > 0) {
                     echo "<div class='tournament-list'>";
                     while($row = $wynik->fetch_assoc()) {
