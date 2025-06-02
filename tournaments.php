@@ -49,7 +49,13 @@
                 }
             }
             $polaczenie->close();
-        ?>
+?>
+<?php
+    if(isset($_SESSION['blad'])) {
+        echo "<div class='error'>" . $_SESSION['blad'] . "</div>";
+        unset($_SESSION['blad']);
+    }    
+?>
     </div>
 
 </body>

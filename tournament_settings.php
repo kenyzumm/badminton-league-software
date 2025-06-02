@@ -81,9 +81,9 @@ echo "
 
 echo "
 <div class='last'>
-    <form action='delete.php' method='POST'>
-        <input type='hidden' value='" . $tournament_id ."'>
-        <input type='submit' value='Usun turniej'';
+    <form action='delete_tournament.php' method='POST'>
+        <input type='hidden' name='tournament_id' value='" . $tournament_id ."'>
+        <input type='submit' value='Usun turniej'>
     </form>
 </div>
 ";
