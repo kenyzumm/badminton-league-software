@@ -87,8 +87,8 @@ h2 {
 .tournament_settings {
     display: flex;
 }
-.add_player {
-    padding: 12px;
+.add_player, .add_category {
+    margin: 12px;
     border: 1px solid #000;
 }
 .description {

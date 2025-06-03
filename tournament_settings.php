@@ -1,148 +1,132 @@
+
 <?php
-    session_start();
+session_start();
+require_once "db_conf.php";
 
+// Sprawdzenie połączenia z bazą
+$connection = new mysqli($host, $db_user, $db_password, $db_name);
+if ($connection->connect_errno != 0) {
+    die("Błąd połączenia z bazą danych: " . $connection->connect_errno);
+}
 
+// Pobranie id turnieju z POST lub sesji
+if (!isset($_SESSION['tournament_id']) || !$_SESSION['tournament_id']) {
+    $tournament_id = filter_input(INPUT_POST, 'tournament-id', FILTER_VALIDATE_INT);
+    if ($tournament_id) {
+        $_SESSION['tournament_id'] = $tournament_id;
+    }
+}
+$tournament_id = $_SESSION['tournament_id'] ?? null;
 ?>
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Ustawienia turnieju</title>
     <link rel="stylesheet" href="css/style.css" type="text/css"/>
 </head>
 <body>
-    <div class="container">
-        <div class="options">
-            <div class="option"><a href="main.php">Strona glowna</a></div>
-            <div class="option"><a href="add_tournament.php">Nowy turniej</a></div>
-            <div class="option"><a href="tournaments.php">Przeglad turniejow</a></div>
-        </div>
-<div class='tournament_settings'>
-
-
-
-
+<div class="container">
+    <div class="options">
+        <div class="option"><a href="main.php">Strona główna</a></div>
+        <div class="option"><a href="add_tournament.php">Nowy turniej</a></div>
+        <div class="option"><a href="tournaments.php">Przegląd turniejów</a></div>
+    </div>
+    <div class='tournament_settings'>
 <?php
-require_once "db_conf.php";
-$connection = new mysqli($host, $db_user, $db_password, $db_name);
-if($connection->connect_errno!=0) {
-    echo "Error: " . $connection->connect_errno;
-} else {
-    // pobranie zmiennych z POST
+if ($tournament_id) {
+    // Pobranie danych o turnieju
+    $stmt = $connection->prepare(
+        "SELECT t.tournament_name, t.tournament_desc, u.user 
+         FROM tournaments t  
+         JOIN users u ON t.owner_id = u.user_id 
+         WHERE t.tournament_id = ?"
+    );
+    $stmt->bind_param("i", $tournament_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-    
-    
-    if(!$_SESSION['tournament_id']) {
-        $_SESSION['tournament_id'] = filter_input(INPUT_POST, 'tournament-id', FILTER_VALIDATE_INT);//
-    
-    }
+    if ($result && $result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        echo "<div class='description'>";
+        echo "<div class='desc'>Nazwa turnieju: " . htmlspecialchars($row['tournament_name']) . "</div>";
+        echo "<div class='desc'>Opis turnieju: " . htmlspecialchars($row['tournament_desc']) . "</div>";
+        echo "<div class='desc'>Właściciel: " . htmlspecialchars($row['user']) . "</div>";
 
-    // zapytanie sql do pobrania danych o turnieju
-    $sql = "SELECT t.tournament_name, t.tournament_desc, u.user 
-            FROM tournaments t  
-            JOIN users u ON t.owner_id = u.user_id 
-            WHERE t.tournament_id='" . $_SESSION['tournament_id'] . "'";
+        // Pobranie graczy
+        $stmt_players = $connection->prepare(
+            "SELECT p.name, p.surname, c.category_name 
+             FROM players p 
+             JOIN category c ON p.category_id = c.category_id 
+             WHERE p.tournament_id = ?"
+        );
+        $stmt_players->bind_param("i", $tournament_id);
+        $stmt_players->execute();
+        $players_result = $stmt_players->get_result();
 
-    if($result = $connection->query($sql)) {
-        if($result && $result->num_rows > 0) {
-            $row = $result->fetch_assoc();
-            echo "<div class='description'>";
-
-            // wypisanie danych turnieju
-            echo "<div class='desc'>Nazwa turnieju: " . htmlspecialchars($row['tournament_name']) . "</div>";
-            echo "<div class='desc'>Opis turnieju: " . htmlspecialchars($row['tournament_desc']) . "</div>"; 
-            echo "<div class='desc'>Wlasciciel: " . htmlspecialchars($row['user']) . "</div>";
-
-
-            // zapytanie sql do wypisania playerow w danym turnieju
-            $sql = "SELECT p.name, p.surname, c.category_name FROM players p JOIN category c ON p.category_id=c.category_id WHERE p.tournament_id='" . $_SESSION['tournament_id'] . "' ";
-            $wynik = $connection->query($sql);
-            
-            // wypisanie graczy, o ile istnieja
-            echo "<div class='players'>";
-
-            if($wynik->num_rows > 0) {
-                $gracze = 1;
-                echo "<div class=''>Gracze:</div>";
-                while($row_players = $wynik->fetch_assoc()) {
-                    echo "<div class='player'>". $gracze++ . ". " . $row_players['name'] . " " . $row_players['surname'] . " Kategoria: " . $row_players['category_name'] . "</div>";
-                }
-            } else {
-                    echo "<div class=''>Brak dodanych graczy</div>";
-                }
-                echo "</div>";
-                
-
-            echo "</div>";
+        echo "<div class='players'>";
+        if ($players_result->num_rows > 0) {
+            $gracze = 1;
+            echo "<div>Gracze:</div>";
+            while ($row_players = $players_result->fetch_assoc()) {
+                echo "<div class='player'>" . $gracze++ . ". " . 
+                    htmlspecialchars($row_players['name']) . " " . 
+                    htmlspecialchars($row_players['surname']) . " Kategoria: " . 
+                    htmlspecialchars($row_players['category_name']) . "</div>";
+            }
+        } else {
+            echo "<div>Brak dodanych graczy</div>";
         }
+        echo "</div>"; // players
+        echo "</div>"; // description
+    } else {
+        echo "<div>Nie znaleziono turnieju.</div>";
     }
+} else {
+    echo "<div>Nie wybrano turnieju.</div>";
 }
 ?>
     <div class='add_category'>
         <form action='add_category.php' method='POST'>
-        <h2>Dodaj katergie</h2>
-        <div class=''>Nazwa kategorii</div>
-        <div class=''><input type='text' name='category_name'></div>
-        <input type='hidden' name='tournament_id' value='<?php echo $_SESSION['tournament_id'] ?>'>
-        <div class=''><input type='submit' value='Dodaj kategię'></div>
+            <h2>Dodaj kategorię</h2>
+            <div>Nazwa kategorii</div>
+            <div><input type='text' name='category_name' required></div>
+            <input type='hidden' name='tournament_id' value='<?php echo htmlspecialchars($tournament_id); ?>'>
+            <div><input type='submit' value='Dodaj kategorię'></div>
         </form>
     </div>
-</div>
-
-
-
- 
     <div class='add_player'>
         <form action='add_player.php' method='POST'>
-        <h2>Dodaj gracza</h2>
-        <div class=''>Imie</div>
-        <div class=''><input type='text' name='name'></div>
-        <div class=''>Nazwisko</div>
-        <div class=''><input type='text' name='surname'></div>
-        <div class=''>Kategoria</div>
-        <select name='category_id'>
-            <?php
-                $category  = mysqli_query($connection, 'SELECT * FROM category');
-                while ($c = mysqli_fetch_array($category)):;
-            ?>
-        
-            <option value="<?php echo $c["category_id"];?>">
-                
-            <?php echo $c["category_name"];?>
-            </option>
-
-
-            <?php 
-                endwhile; 
-                // While loop must be terminated
-            ?>
- 
-        </select>
-        
-
-        <input type='hidden' name='tournament_id' value='<?php echo $_SESSION['tournament_id']?>'>
-        <div class=''><input type='submit' value='Dodaj gracza'></div>
+            <h2>Dodaj gracza</h2>
+            <div>Imię</div>
+            <div><input type='text' name='name' required></div>
+            <div>Nazwisko</div>
+            <div><input type='text' name='surname' required></div>
+            <div>Kategoria</div>
+            <select name='category_id' required>
+                <?php
+                $category = $connection->query("SELECT * FROM category");
+                while ($c = $category->fetch_assoc()):
+                ?>
+                <option value="<?php echo htmlspecialchars($c["category_id"]); ?>">
+                    <?php echo htmlspecialchars($c["category_name"]); ?>
+                </option>
+                <?php endwhile; ?>
+            </select>
+            <input type='hidden' name='tournament_id' value='<?php echo htmlspecialchars($tournament_id); ?>'>
+            <div><input type='submit' value='Dodaj gracza'></div>
         </form>
     </div>
-</div>
-
-
-
-
-
-<div class='last'>
-    <form action='delete_tournament.php' method='POST'>
-        <input type='hidden' name='tournament_id' value='<?php echo $_SESSION['tournament_id']?>'>
-        <input type='submit' value='Usun turniej'>
-    </form>
-</div>
-<?php
-    $connection->close();
-?>
-
-
+</div> <!-- tournament_settings -->
+    <div class='last'>
+        <form action='delete_tournament.php' method='POST'>
+            <input type='hidden' name='tournament_id' value='<?php echo htmlspecialchars($tournament_id); ?>'>
+            <input type='submit' value='Usuń turniej'>
+        </form>
     </div>
-
+</div> <!-- container -->
+<?php $connection->close(); ?>
 </body>
 </html>
