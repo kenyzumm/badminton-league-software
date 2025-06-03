@@ -10,13 +10,10 @@ if ($connection->connect_errno != 0) {
 }
 
 // Pobranie id turnieju z POST lub sesji
-if (!isset($_SESSION['tournament_id']) || !$_SESSION['tournament_id']) {
-    $tournament_id = filter_input(INPUT_POST, 'tournament-id', FILTER_VALIDATE_INT);
-    if ($tournament_id) {
-        $_SESSION['tournament_id'] = $tournament_id;
-    }
+$tournament_id = filter_input(INPUT_POST, 'tournament_id', FILTER_VALIDATE_INT);
+if($tournament_id != NULL) {
+    $_SESSION['tournament_id'] = $tournament_id;
 }
-$tournament_id = $_SESSION['tournament_id'] ?? null;
 ?>
 
 <!DOCTYPE html>
@@ -62,7 +59,7 @@ if ($_SESSION['tournament_id']) {
              JOIN category c ON p.category_id = c.category_id 
              WHERE p.tournament_id = ?"
         );
-        $stmt_players->bind_param("i", $tournament_id);
+        $stmt_players->bind_param("i", $_SESSION['tournament_id']);
         $stmt_players->execute();
         $players_result = $stmt_players->get_result();
 
