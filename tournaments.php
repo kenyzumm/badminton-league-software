@@ -38,7 +38,7 @@
                             echo "<div class='tournament-owner_id'>" . htmlspecialchars($row['owner_id']) . "</div>";
                             echo "  <div class='button'>
                                         <form action='tournament_settings.php' method='POST'>
-                                        <input type='hidden' name='tournament-id' value='" . htmlspecialchars($row['tournament_id']) . "'>
+                                        <input type='hidden' name='tournament_id' value='" . htmlspecialchars($row['tournament_id']) . "'>
                                         <button type='submit'>
                                             Ustawienia
                                         </button>

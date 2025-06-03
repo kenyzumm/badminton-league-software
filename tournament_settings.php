@@ -36,7 +36,7 @@ $tournament_id = $_SESSION['tournament_id'] ?? null;
     </div>
     <div class='tournament_settings'>
 <?php
-if ($tournament_id) {
+if ($_SESSION['tournament_id']) {
     // Pobranie danych o turnieju
     $stmt = $connection->prepare(
         "SELECT t.tournament_name, t.tournament_desc, u.user 
@@ -44,7 +44,7 @@ if ($tournament_id) {
          JOIN users u ON t.owner_id = u.user_id 
          WHERE t.tournament_id = ?"
     );
-    $stmt->bind_param("i", $tournament_id);
+    $stmt->bind_param("i", $_SESSION['tournament_id']);
     $stmt->execute();
     $result = $stmt->get_result();
 
