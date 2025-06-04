@@ -30,23 +30,24 @@
                 // wypisanie turniejow
                 if($wynik && $wynik->num_rows > 0) {
                     echo "<div class='tournament-list'>";
-                    while($row = $wynik->fetch_assoc()) {
-                        echo "<div class='tournament'>";
-                            echo "<div class='tournament-id'>" . htmlspecialchars($row['tournament_id']) . "</div>";
-                            echo "<div class='tournament-name'>" . htmlspecialchars($row['tournament_name']) . "</div>";
-                            echo "<div class='tournament-desc'>" . htmlspecialchars($row['tournament_desc']) . "</div>";
-                            echo "<div class='tournament-owner_id'>" . htmlspecialchars($row['owner_id']) . "</div>";
-                            echo "  <div class='button'>
+                    while($row = $wynik->fetch_assoc()): ?>
+                        <div class='tournament'>
+                        <div class='tournament-id'><?php echo htmlspecialchars($row['tournament_id']) ?></div>
+                        <div class='tournament-name'><?php echo htmlspecialchars($row['tournament_name']) ?></div>
+                        <div class='tournament-desc'> <?php echo htmlspecialchars($row['tournament_desc']) ?></div>
+                        <div class='tournament-owner_id'><?php echo htmlspecialchars($row['owner_id']) ?></div>
+                            <div class='button'>
                                         <form action='tournament_settings.php' method='POST'>
-                                        <input type='hidden' name='tournament_id' value='" . htmlspecialchars($row['tournament_id']) . "'>
+                                        <input type='hidden' name='tournament_id' value="<?php echo htmlspecialchars($row['tournament_id']) ?>">
                                         <button type='submit'>
                                             Ustawienia
                                         </button>
                                         </form>
-                                    </div>";
-                        echo "</div>";
-                    }
-                    echo "</div>";
+                                    </div>
+                        </div>
+<?php endwhile; ?>
+                    </div>
+<?php
                 } else {
                     echo "<div class='tournament'>Brak turniejow</div>";
                 }
